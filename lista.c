@@ -60,16 +60,80 @@ int lista_insertar_en_posicion(lista_t* lista, void* elemento, size_t posicion){
         return -1;
     }
 
-    
+    if(lista->cantidad == 0 || (lista->cantidad) + 1 == posicion){
+        lista_insertar(lista,elemento);
+        return 0;
+    }
+
+    void* elemento_posicion = lista_elemento_en_posicion(lista,posicion);
+    if(elemento_posicion == NULL){
+        return -1;
+    }
+
+    nodo_t* nuevo_nodo = malloc(sizeof(nodo_t));
+    nuevo_nodo->elemento = elemento;
+   
+    nodo_t* temp;
+    temp = lista->nodo_inicio;
+
+    while(temp->elemento != elemento_posicion){
+        temp = temp->siguiente; 
+    }
+   
+    nuevo_nodo->siguiente = temp->siguiente;
+    temp->siguiente = nuevo_nodo;
+    lista->cantidad += 1;
     return 0;
 }
 
 int lista_borrar(lista_t* lista){
+    
+    if(lista == NULL || lista->cantidad == 0){
+        return -1;
+    }
+    
+    nodo_t* temp;
+    temp = lista->nodo_inicio;
+
+    while(temp->siguiente->siguiente != NULL){
+        temp = temp->siguiente; 
+    }
+    lista->nodo_fin = temp;
+    free(temp->siguiente);
+    lista->cantidad -= 1;
     return 0;
 }
 
 int lista_borrar_de_posicion(lista_t* lista, size_t posicion){
+
+    if( (lista->cantidad == 0) || (lista == NULL)){
+        return -1;
+    }
+
+    if((lista->cantidad) == posicion){
+        lista_borrar(lista);
+        return 0;
+    }
+
+    void* elemento_posicion = lista_elemento_en_posicion(lista,posicion);
+    if(elemento_posicion == NULL){
+        return -1;
+    }
+   
+    nodo_t* temp;
+    nodo_t* temp2;
+    temp = lista->nodo_inicio;
+
+    while(temp->siguiente->elemento != elemento_posicion){
+        temp = temp->siguiente; 
+    }
+    
+    temp2 = temp->siguiente;
+    temp->siguiente = temp2->siguiente;
+    free(temp2);
+    lista->cantidad -= 1;
     return 0;
+
 }
 
 void* lista_elemento_en_posicion(lista_t* lista, size_t posicion){
@@ -133,9 +197,10 @@ void* lista_primero(lista_t* lista){
 }
 
 void lista_destruir(lista_t* lista){
-    
-    free(lista);
 
+    free(lista->nodo_inicio);
+    free(lista);
+  
 }
 
 lista_iterador_t* lista_iterador_crear(lista_t* lista){
