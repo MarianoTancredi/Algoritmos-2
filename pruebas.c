@@ -1,5 +1,6 @@
 #include "lista.h"
 #include "pa2mm.h"
+#include <stdio.h>
 
 void crea_una_lista(){
   lista_t* lista = NULL;
@@ -109,9 +110,40 @@ void borrar_elemento(){
   void* elemento4 = "Prueba3";
   lista_insertar(lista,elemento4);
   
+  pa2m_afirmar((lista_borrar_de_posicion(lista,1)==0), "Se puede borrar el elemento en la posicion 1");
+  pa2m_afirmar((lista_elemento_en_posicion(lista,1) == elemento4),"El Nodo siguiente tomo su lugar");
+  pa2m_afirmar((lista->nodo_fin->elemento == elemento4),"El nodo siguiente sigue siendo el Nodo final");
+
   
 
 }
+
+void insertar_a_una_pila(){
+  lista_t* lista = lista_crear();
+  lista_t* lista2 = NULL;
+  void* elemento = "Prueba";
+  void* elemento2 = "Prueba2";
+  void* elemento3 = "Prueba3";
+  
+  pa2m_afirmar((lista_apilar(lista,NULL) == -1),"Agregar un elemento NULL devuelve error");
+  pa2m_afirmar((lista_apilar(lista2,elemento) == -1),"Agregar una lista NULL devuelve error");
+
+  pa2m_afirmar((lista_apilar(lista,elemento) == 0),"Se puede introducir un elemento a la pila");
+  lista_apilar(lista,elemento2);
+  lista_apilar(lista,elemento3);
+  pa2m_afirmar((lista->nodo_inicio->elemento == elemento3),"El ultimo elemento insertado es el tope de la pila");
+  pa2m_afirmar((lista->nodo_fin->elemento == elemento),"El primer elemento insertado es el final de la pila");
+  
+  pa2m_nuevo_grupo("Desapilar");
+
+  pa2m_afirmar((lista_desapilar(lista) == 0),"Se pudo desapilar correctamente");
+  pa2m_afirmar((lista_tope(lista) == elemento2 ),"El nuevo tope es el Elemento siguiente al tope anterior");
+
+
+  lista_destruir(lista);
+}
+
+
 
 int main() {
   pa2m_nuevo_grupo("Hace las pruebas");
@@ -131,5 +163,9 @@ int main() {
   pa2m_nuevo_grupo("Borrar elemento");
   borrar_elemento();
 
+  pa2m_nuevo_grupo("Pruebas de Pila");
+  
+  pa2m_nuevo_grupo("Insertar a una Pila");
+  insertar_a_una_pila();
   return pa2m_mostrar_reporte();
 }

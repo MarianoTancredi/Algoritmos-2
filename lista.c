@@ -100,6 +100,7 @@ int lista_borrar(lista_t* lista){
     }
     lista->nodo_fin = temp;
     free(temp->siguiente);
+    temp->siguiente = NULL;
     lista->cantidad -= 1;
     return 0;
 }
@@ -161,27 +162,79 @@ void* lista_elemento_en_posicion(lista_t* lista, size_t posicion){
 }
 
 void* lista_ultimo(lista_t* lista){
+    if(lista->cantidad == 0 || lista == NULL){
     return NULL;
+    }
+
+    return lista->nodo_fin->elemento; 
 }
 
 bool lista_vacia(lista_t* lista){
+    if(lista == NULL || lista->cantidad > 0){ 
     return false;
+    }
+    else{
+        return true;
+    }
 }
 
 size_t lista_elementos(lista_t* lista){
-    return 0;
+    if(lista == NULL){
+        return 0;
+    }
+    return lista->cantidad;
 }
 
 int lista_apilar(lista_t* lista, void* elemento){
+    
+    if((elemento == NULL) || (lista == NULL)){
+        return -1;
+    }
+
+   nodo_t* nuevo_nodo = malloc(sizeof(nodo_t));
+    nuevo_nodo->elemento = elemento;
+    
+    
+
+    if(lista->cantidad == 0){
+        lista->nodo_inicio = nuevo_nodo;
+        lista->nodo_fin =  lista->nodo_inicio;
+        lista->nodo_fin->siguiente = NULL;
+        lista->cantidad += 1;
+    }
+
+    nuevo_nodo->siguiente = lista->nodo_inicio;
+    lista->nodo_inicio = nuevo_nodo;
+    lista->cantidad += 1;
     return 0;
 }
 
 int lista_desapilar(lista_t* lista){
+    if(lista == NULL || lista->cantidad == 0){
+        return -1;
+    }
+
+    if(lista->cantidad == 1){
+        free(lista->nodo_fin);
+        lista->cantidad -= 1;
+        return 0;
+
+    }
+
+    nodo_t* temp;
+    temp = lista->nodo_inicio;
+    lista->nodo_inicio = temp->siguiente;
+    free(temp);
+    lista->cantidad -= 1;
     return 0;
 }
 
 void* lista_tope(lista_t* lista){
-    return NULL;
+    if(lista != NULL){
+        return NULL;
+    }
+    
+    return lista->nodo_inicio->elemento;
 }
 
 int lista_encolar(lista_t* lista, void* elemento){
@@ -193,7 +246,10 @@ int lista_desencolar(lista_t* lista){
 }
 
 void* lista_primero(lista_t* lista){
+    if(lista->cantidad == 0 || lista == NULL){
     return NULL;
+    }
+    return lista->nodo_inicio->elemento;
 }
 
 void lista_destruir(lista_t* lista){
