@@ -7,7 +7,7 @@ void crea_una_lista(){
   pa2m_afirmar((lista = lista_crear()) != NULL,"Puedo crear una lista");
 
   pa2m_afirmar((lista->nodo_fin->siguiente == NULL),"El elemento siguiente al Nodo final es NULL");  
-  pa2m_afirmar((lista->cantidad == 0),"La lista tiene 0 elementos");
+  pa2m_afirmar((lista_elementos(lista) == 0),"La lista tiene 0 elementos");
   lista_destruir(lista);
 }
 
@@ -24,21 +24,21 @@ void inserta_un_elemento(){
 
   pa2m_afirmar((lista_insertar(lista,elemento) == 0),"Se inserto un elemento a la lista");
 
-  pa2m_afirmar((lista->cantidad == 1),"La lista tiene 1 elementos");
+  pa2m_afirmar((lista_elementos(lista) == 1),"La lista tiene 1 elementos");
 
   pa2m_afirmar((lista_insertar(lista,elemento2) == 0),"Se inserto un elemento a la lista");
 
-  pa2m_afirmar((lista->cantidad == 2),"La lista tiene 2 elementos");
+  pa2m_afirmar((lista_elementos(lista) == 2),"La lista tiene 2 elementos");
   
   pa2m_afirmar((lista_insertar(lista,elemento3) == 0),"Se inserto un elemento a la lista");
 
-  pa2m_afirmar((lista->nodo_inicio->elemento == elemento),"El primer elemento insertado es el Nodo inicial");
+  pa2m_afirmar((lista_primero(lista) == elemento),"El primer elemento insertado es el Nodo inicial");
   
-  pa2m_afirmar((lista->nodo_inicio->siguiente->elemento == elemento2),"El segundo elemento insertado es el segundo de la lista");
+  pa2m_afirmar((lista_elemento_en_posicion(lista,1) == elemento2),"El segundo elemento insertado es el segundo de la lista");
   
-   pa2m_afirmar((lista->nodo_inicio->siguiente->siguiente->elemento == elemento3),"El tercer elemento insertado es el tercero de la lista");
+  pa2m_afirmar((lista_elemento_en_posicion(lista,2)== elemento3),"El tercer elemento insertado es el tercero de la lista");
 
-  pa2m_afirmar((lista->nodo_fin->elemento == elemento3),"El tercer elemento insertado es el Nodo final");
+  pa2m_afirmar((lista_ultimo(lista) == elemento3),"El tercer elemento insertado es el Nodo final");
 
   pa2m_afirmar((lista->nodo_fin->siguiente == NULL),"El elemento que sigue al Nodo final es NULL");
 
@@ -83,11 +83,11 @@ void inserta_un_elemento_indicado(){
 
   pa2m_afirmar((lista_insertar_en_posicion(lista,elemento4,1) == 0),"El elemento se inserto correctamente");
   pa2m_afirmar((lista_elemento_en_posicion(lista,2) == elemento4), "El elemento se inserto en la posicion 2");
-  pa2m_afirmar((lista->nodo_fin->elemento == elemento3),"El nodo final sigue siendo el mismo");
+  pa2m_afirmar((lista_ultimo(lista) == elemento3),"El nodo final sigue siendo el mismo");
 
 
   pa2m_afirmar((lista_insertar_en_posicion(lista,elemento5,5) == 0),"Se puede agregar un elemento en la posicion final");
-  pa2m_afirmar((lista->nodo_fin->elemento == elemento5),"El Nodo final cambio");
+  pa2m_afirmar((lista_ultimo(lista) == elemento5),"El Nodo final cambio");
 
   lista_destruir(lista);
 }
@@ -103,8 +103,8 @@ void borrar_elemento(){
   lista_insertar(lista,elemento3);
 
   pa2m_afirmar((lista_borrar(lista) == 0),"El elemento se borro correctamente");
-  pa2m_afirmar((lista->cantidad == 2),"La cantidad de elementos se redujo en 1");
-  pa2m_afirmar((lista->nodo_fin->elemento == elemento2),"El Nodo final es el elemento previo al que se borro");
+  pa2m_afirmar((lista_elementos(lista) == 2),"La cantidad de elementos se redujo en 1");
+  pa2m_afirmar((lista_ultimo(lista) == elemento2),"El Nodo final es el elemento previo al que se borro");
   pa2m_afirmar((lista_borrar(lista2) == -1),"No se puede borrar una lista sin elementos");
   
   void* elemento4 = "Prueba3";
@@ -112,7 +112,7 @@ void borrar_elemento(){
   
   pa2m_afirmar((lista_borrar_de_posicion(lista,1)==0), "Se puede borrar el elemento en la posicion 1");
   pa2m_afirmar((lista_elemento_en_posicion(lista,1) == elemento4),"El Nodo siguiente tomo su lugar");
-  pa2m_afirmar((lista->nodo_fin->elemento == elemento4),"El nodo siguiente sigue siendo el Nodo final");
+  pa2m_afirmar((lista_ultimo(lista) == elemento4),"El nodo siguiente sigue siendo el Nodo final");
 
   
 
@@ -131,16 +131,19 @@ void insertar_a_una_pila(){
   pa2m_afirmar((lista_apilar(lista,elemento) == 0),"Se puede introducir un elemento a la pila");
   lista_apilar(lista,elemento2);
   lista_apilar(lista,elemento3);
-  pa2m_afirmar((lista->nodo_inicio->elemento == elemento3),"El ultimo elemento insertado es el tope de la pila");
-  pa2m_afirmar((lista->nodo_fin->elemento == elemento),"El primer elemento insertado es el final de la pila");
+  pa2m_afirmar((lista_primero(lista) == elemento3),"El ultimo elemento insertado es el tope de la pila");
+  pa2m_afirmar((lista_ultimo(lista) == elemento),"El primer elemento insertado es el final de la pila");
   
   pa2m_nuevo_grupo("Desapilar");
 
   pa2m_afirmar((lista_desapilar(lista) == 0),"Se pudo desapilar correctamente");
   pa2m_afirmar((lista_tope(lista) == elemento2 ),"El nuevo tope es el Elemento siguiente al tope anterior");
+  lista_desapilar(lista);
+  lista_desapilar(lista);
+  pa2m_afirmar((lista_desapilar(lista) == -1),"No se puede desapilar una lista sin elementos");
 
+  free(lista);
 
-  lista_destruir(lista);
 }
 
 

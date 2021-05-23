@@ -201,6 +201,7 @@ int lista_apilar(lista_t* lista, void* elemento){
         lista->nodo_fin =  lista->nodo_inicio;
         lista->nodo_fin->siguiente = NULL;
         lista->cantidad += 1;
+        return 0;
     }
 
     nuevo_nodo->siguiente = lista->nodo_inicio;
@@ -210,12 +211,13 @@ int lista_apilar(lista_t* lista, void* elemento){
 }
 
 int lista_desapilar(lista_t* lista){
-    if(lista == NULL || lista->cantidad == 0){
+    
+    if(lista->cantidad == 0 || lista == NULL ){
         return -1;
     }
 
     if(lista->cantidad == 1){
-        free(lista->nodo_fin);
+        free(lista->nodo_inicio);
         lista->cantidad -= 1;
         return 0;
 
@@ -230,7 +232,7 @@ int lista_desapilar(lista_t* lista){
 }
 
 void* lista_tope(lista_t* lista){
-    if(lista != NULL){
+    if(lista == NULL){
         return NULL;
     }
     
@@ -238,10 +240,53 @@ void* lista_tope(lista_t* lista){
 }
 
 int lista_encolar(lista_t* lista, void* elemento){
+    
+    if((elemento == NULL) || (lista == NULL)){
+        return -1;
+    }
+
+    nodo_t* nuevo_nodo;
+    nuevo_nodo->elemento = elemento;
+
+    if(lista->cantidad == 0){
+        lista->nodo_inicio = nuevo_nodo;
+        lista->nodo_fin =  lista->nodo_inicio;
+        lista->nodo_fin->siguiente = NULL;
+        lista->cantidad += 1;
+        return 0;
+    }
+
+    nodo_t* temp;
+    temp = lista->nodo_inicio;
+
+    while(temp->siguiente != NULL){
+        temp = temp->siguiente; 
+    }
+    
+    temp->siguiente = nuevo_nodo;
+    lista->nodo_fin = temp->siguiente;
+    lista->cantidad += 1;
+
     return 0;
 }
 
 int lista_desencolar(lista_t* lista){
+    
+    if(lista->cantidad == 0 || lista == NULL ){
+        return -1;
+    }
+
+    if(lista->cantidad == 1){
+        free(lista->nodo_inicio);
+        lista->cantidad -= 1;
+        return 0;
+    }
+    
+    nodo_t* temp;
+    temp = lista->nodo_inicio;
+    lista->nodo_inicio = temp->siguiente;
+    free(temp);
+    lista->cantidad -= 1;
     return 0;
 }
 
