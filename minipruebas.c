@@ -34,7 +34,7 @@ void probar_operaciones_lista(){
         printf("%c ", *(char*)lista_iterador_elemento_actual(it));
     printf("\n\n");
 
-    lista_iterador_destruir(it);
+
 
     int contador=0;
     size_t elementos_recorridos = 0;
@@ -44,7 +44,7 @@ void probar_operaciones_lista(){
     printf("Recorri %lu elementos con el iterador interno y sume %i elementos\n", elementos_recorridos, contador);
     
     printf("\n");
-    lista_destruir(lista);
+    
 }
 
 void probar_operaciones_cola(){
