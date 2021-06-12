@@ -1,26 +1,14 @@
-#include "abb.h"
-#include <stdio.h>
-#include "string.h"
-
-int comparador(void* elemento1, void* elemento2){
-    if(!elemento1 || !elemento2)
-        return 0;
-
-    int c = *((int *)elemento1);
-    int d = *((int *)elemento2);
-
-    return c - d;
-}
-
-void destructor(void* elemento){
-  free(elemento);
-}
-
-int main(){
-    abb_t* arbol = arbol_crear(comparador,destructor);
-    void* numero = "Hola";
-    arbol_insertar(arbol,numero);
-    printf("%s",(char*) arbol->nodo_raiz->elemento);
-
-    return 0;
-}
+pa2m_afirmar((arbol_borrar(NULL,numero2) == -1),"No puede eliminarse en un arbol NULL");
+  pa2m_afirmar((arbol_borrar(arbol,numero4) == 0),"Se puede eliminar el Nodo raiz");
+  pa2m_afirmar((arbol_raiz(arbol) == numero3),"El nodo derecho del hijo izquierdo de la raiz  es el nuevo Nodo Raiz");
+  pa2m_afirmar((arbol->nodo_raiz->izquierda->elemento == numero2),"El nodo de la izquierda  es el nuevo Nodo Raiz");
+  pa2m_afirmar((arbol->nodo_raiz->derecha->elemento == numero6),"El nodo de la derecha  es el nuevo Nodo Raiz");
+  pa2m_afirmar((arbol_borrar(arbol,numero) == 0),"Se puede eliminar un Nodo sin hijos");
+  pa2m_afirmar((arbol_buscar(arbol,aux2) == NULL),"El elemento no se encuentra mas en el arbol");
+  pa2m_afirmar((arbol_borrar(arbol,numero6) == 0),"Se puede eliminar un Nodo con 2 hijos");
+  pa2m_afirmar((arbol->nodo_raiz->derecha->elemento == numero5),"Su hijo izquierdo tomo su lugar");
+  pa2m_afirmar((arbol->nodo_raiz->derecha->derecha->elemento == numero7),"El hijo derecho es el hijo derecho del anterior");
+  pa2m_afirmar((arbol_borrar(arbol,numero3)==0),"Puedo borrar el nono raiz de nuevo");
+  pa2m_afirmar((arbol_raiz(arbol) == numero2),"El nodo de la izquierda  es el nuevo Nodo Raiz");
+  pa2m_afirmar((arbol_buscar(arbol,aux) == NULL),"El elemento no se encuentra mas en el arbol");
+  pa2m_afirmar((arbol_buscar(arbol,aux2) == NULL),"No puedo borrar un elemento  que no se encuentra mas en el arbol");
