@@ -1,17 +1,17 @@
-VALGRIND_FLAGS=--leak-check=full --track-origins=yes --show-reachable=yes --error-exitcode=2
-CC = gcc
-CFLAGS =-g -O0 -std=c99 -Wall -Wconversion -Wtype-limits -pedantic -Werror  -I cabeceras
-
-all: clean valgrind
-
-minidemo: abb.c minidemo.c
-	$(CC) $(CFLAGS) abb.c minidemo.c -o minidemo 2>&1
-
-pruebas: abb.c pruebas.c
-	$(CC) $(CFLAGS) abb.c pruebas.c -o pruebas 2>&1
+CFLAGS=-g -O2 -std=c99 -Wall -Wconversion -Wtype-limits -Werror -I src
+VFLAGS=--leak-check=full --track-origins=yes --show-reachable=yes --error-exitcode=2
 
 valgrind: pruebas
-	valgrind $(VALGRIND_FLAGS) ./pruebas 2>&1
+	valgrind $(VFLAGS) ./pruebas 2>&1
+
+valgrind-server: server
+	valgrind $(VFLAGS) ./server 2>&1
+
+pruebas:
+	gcc $(CFLAGS) -o pruebas pruebas.c src/*.c 2>&1
+
+server:
+	gcc $(CFLAGS) -o server server.c src/*.c 2>&1
 
 clean:
-	rm -f minidemo pruebas_chanutron 2>&1
+	rm pruebas server 2>&1
